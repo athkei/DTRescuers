@@ -20,7 +20,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '564192944628',
     projectId: 'disastrackdb',
     storageBucket: 'disastrackdb.firebasestorage.app',
-    databaseURL: _dbUrl,
+    databaseURL: 'https://disastrackdb-default-rtdb.firebaseio.com',
   );
 
   // Only needed if you run the app in a browser. Register a Web app in
