@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "564192944628",
+    "firebase_url": "https://disastrackdb-default-rtdb.firebaseio.com",
+    "project_id": "disastrackdb",
+    "storage_bucket": "disastrackdb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:564192944628:android:20ba975e3b729b930419a1",
+        "android_client_info": {
+          "package_name": "com.example.rescue_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQRfrMWxsC7w3srWcuYuugHInaZJ2LkOQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:564192944628:android:34367bb28829a9410419a1",
+        "android_client_info": {
+          "package_name": "com.example.residentapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQRfrMWxsC7w3srWcuYuugHInaZJ2LkOQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
