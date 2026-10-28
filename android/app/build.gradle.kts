@@ -23,12 +23,10 @@ if (flutterVersionName == null) {
 }
 
 android {
-    // ⚠️ IMPORTANT: Change this to match your actual package name if it's different
-    namespace "com.disastrack.rescuer" 
+    namespace "com.disastrack.rescuer"
     
-    // Hardcoded to 35 to satisfy the geolocator plugin requirement and prevent Gradle errors
-    compileSdkVersion 35 
-    ndkVersion flutter.ndkVersion
+    // ⚠️ CRITICAL FIX: Explicitly set to 34 to satisfy geolocator_android plugin
+    compileSdkVersion 34
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -44,9 +42,7 @@ android {
     }
 
     defaultConfig {
-        // ⚠️ IMPORTANT: Change this to match your actual package name if it's different
-        applicationId "com.disastrack.rescuer" 
-        
+        applicationId "com.disastrack.rescuer"
         minSdkVersion 21
         targetSdkVersion 34
         versionCode flutterVersionCode.toInteger()
@@ -55,8 +51,6 @@ android {
 
     buildTypes {
         release {
-            // Using debug signing so the GitHub Actions build succeeds. 
-            // You can add a real keystore later for the Play Store.
             signingConfig signingConfigs.debug
         }
     }
@@ -65,5 +59,3 @@ android {
 flutter {
     source '../..'
 }
-
-dependencies {}
