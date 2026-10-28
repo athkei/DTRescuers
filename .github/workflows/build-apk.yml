@@ -3,37 +3,32 @@ name: Build Flutter APK
 on:
   push:
     branches: [ main, master ]
-  workflow_dispatch: # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 jobs:
   build:
-    name: Build Release APK
+    name: Build Debug APK
     runs-on: ubuntu-latest
     
     steps:
-      # 1. Check out your code
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Set up Flutter
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.0' # You can change this to match your FlutLab version
+          flutter-version: '3.24.0'
           channel: 'stable'
 
-      # 3. Install dependencies
       - name: Install dependencies
         run: flutter pub get
 
-      # 4. Build the Release APK
-      - name: Build APK
-        run: flutter build apk --release
+      - name: Build Debug APK
+        run: flutter build apk --debug
 
-      # 5. Upload the APK so you can download it
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: disastrack-rescuer-release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          name: disastrack-rescuer-debug-apk
+          path: build/app/outputs/flutter-apk/app-debug.apk
           retention-days: 7
