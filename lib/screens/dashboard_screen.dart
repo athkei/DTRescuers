@@ -13,7 +13,6 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final profile = AuthService.instance.currentUserProfile;
-
     if (profile == null) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
@@ -25,13 +24,13 @@ class DashboardScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text('Dispatch Dashboard',
-                style: TextStyle(fontWeight: FontWeight.w700)),
+                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18)),
             Text(
                 profile.teamId != null
                     ? 'Team: ${profile.teamId}'
                     : 'Role: ${profile.role}',
                 style: const TextStyle(
-                    fontSize: 12,
+                    fontSize: 12.5,
                     fontWeight: FontWeight.normal,
                     color: AppColors.muted)),
           ],
@@ -40,19 +39,13 @@ class DashboardScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.map_outlined),
             tooltip: 'Team Status & Location',
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const TeamStatusScreen()),
-              );
-            },
+            onPressed: () => Navigator.push(context,
+                MaterialPageRoute(builder: (_) => const TeamStatusScreen())),
           ),
           IconButton(
             icon: const Icon(Icons.logout),
             tooltip: 'Log out',
-            onPressed: () async {
-              await AuthService.instance.signOut();
-            },
+            onPressed: () => confirmLogout(context),
           ),
         ],
       ),
@@ -60,15 +53,14 @@ class DashboardScreen extends StatelessWidget {
         stream: IncidentService.instance.watchIncidents(),
         builder: (context, snap) {
           if (snap.hasError) {
-            print('🔥 DASHBOARD STREAM ERROR: ${snap.error}');
             return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Column(
+                child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Icon(Icons.error_outline,
-                        color: Colors.red, size: 48),
+                        color: AppColors.error, size: 48),
                     const SizedBox(height: 16),
                     const Text('Failed to load incidents.',
                         style: TextStyle(fontWeight: FontWeight.w700)),
@@ -77,16 +69,11 @@ class DashboardScreen extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                             color: AppColors.muted, fontSize: 13)),
-                    const SizedBox(height: 16),
-                    FilledButton(onPressed: () {}, child: const Text('Retry'))
-                  ],
-                ),
-              ),
-            );
+                  ]),
+            ));
           }
-          if (!snap.hasData) {
+          if (!snap.hasData)
             return const Center(child: CircularProgressIndicator());
-          }
 
           final allIncidents = snap.data!;
           final incidents = allIncidents.where((inc) {
@@ -127,22 +114,17 @@ class DashboardScreen extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),
                   side: BorderSide(
-                    color: isAssignedToMe
-                        ? AppColors.primary
-                        : const Color(0xFFE5E7EB),
-                    width: isAssignedToMe ? 2 : 1,
-                  ),
+                      color:
+                          isAssignedToMe ? AppColors.primary : AppColors.line,
+                      width: isAssignedToMe ? 2 : 1),
                 ),
                 child: InkWell(
                   borderRadius: BorderRadius.circular(14),
-                  onTap: () {
-                    Navigator.push(
+                  onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (_) => IncidentDetailScreen(
-                              incident: inc, profile: profile)),
-                    );
-                  },
+                              incident: inc, profile: profile))),
                   child: Padding(
                     padding: const EdgeInsets.all(16),
                     child: Column(
@@ -153,22 +135,31 @@ class DashboardScreen extends StatelessWidget {
                             Text(inc.id,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.w700,
-                                    color: AppColors.muted)),
+                                    color: AppColors.muted,
+                                    fontSize: 12.5)),
                             const Spacer(),
                             StatusChip(inc.status),
                           ],
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 10),
                         Text(inc.type,
                             style: const TextStyle(
                                 fontSize: 18,
-                                fontWeight: FontWeight.w700,
+                                fontWeight: FontWeight.w800,
                                 color: AppColors.ink)),
-                        const SizedBox(height: 4),
-                        Text(inc.location,
-                            style: const TextStyle(
-                                color: AppColors.muted, fontSize: 13)),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 6),
+                        Row(
+                          children: [
+                            const Icon(Icons.location_on_outlined,
+                                size: 16, color: AppColors.muted),
+                            const SizedBox(width: 4),
+                            Expanded(
+                                child: Text(inc.location,
+                                    style: const TextStyle(
+                                        color: AppColors.muted, fontSize: 13))),
+                          ],
+                        ),
+                        const SizedBox(height: 12),
                         Row(
                           children: [
                             Icon(Icons.priority_high,
@@ -179,7 +170,7 @@ class DashboardScreen extends StatelessWidget {
                             const SizedBox(width: 4),
                             Text(inc.priority,
                                 style: TextStyle(
-                                    fontSize: 12,
+                                    fontSize: 12.5,
                                     fontWeight: FontWeight.w600,
                                     color: inc.priority == 'Critical'
                                         ? Colors.red
@@ -187,28 +178,27 @@ class DashboardScreen extends StatelessWidget {
                             const SizedBox(width: 12),
                             Text(fmt.format(inc.createdAt),
                                 style: const TextStyle(
-                                    fontSize: 12, color: AppColors.muted)),
+                                    fontSize: 12.5, color: AppColors.muted)),
                           ],
                         ),
                         if (isAssignedToMe) ...[
-                          const SizedBox(height: 12),
+                          const SizedBox(height: 14),
                           Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4),
+                                horizontal: 10, vertical: 6),
                             decoration: BoxDecoration(
-                              color: AppColors.primary.withValues(alpha: 0.12),
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: Row(
+                                color: AppColors.primary.withValues(alpha: 0.1),
+                                borderRadius: BorderRadius.circular(8)),
+                            child: const Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                const Icon(Icons.check_circle,
-                                    size: 14, color: AppColors.primary),
-                                const SizedBox(width: 6),
-                                const Text('Assigned to your team',
+                                Icon(Icons.check_circle,
+                                    size: 16, color: AppColors.primary),
+                                SizedBox(width: 6),
+                                Text('Assigned to your team',
                                     style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600,
+                                        fontSize: 12.5,
+                                        fontWeight: FontWeight.w700,
                                         color: AppColors.primary)),
                               ],
                             ),

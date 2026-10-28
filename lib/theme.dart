@@ -8,17 +8,22 @@ class AppColors {
   static const brightSnow = Color(0xFFFAF8F5); // Off-white cream - background
   static const blueSlate = Color(0xFF5C6B7A); // Muted blue-gray - secondary
 
-  // Semantic color aliases for easier use
+  // Aliases for Resident App UI compatibility
   static const primary = brandy;
-  static const primaryDark =
-      Color(0xFF6B1B09); // Darker shade for pressed states
+  static const primaryDark = Color(0xFF6B1B09); // Darker shade for gradients
+  static const primaryLight = Color(0xFFB34D3A); // Lighter shade for gradients
   static const accent = tuscanSun;
+  static const gold = tuscanSun;
+  static const red = brandy; // Mapped to brandy for UI consistency
+  static const redLight = primaryLight;
+  static const redDark = primaryDark;
   static const ink = jetBlack;
   static const muted = blueSlate;
   static const surface = brightSnow;
-  static const success = Color(0xFF2E7D32); // Green for resolved/completed
-  static const warning = tuscanSun; // Yellow for warnings
-  static const error = brandy; // Red-brown for errors
+  static const line = Color(0xFFD5D9E0);
+  static const success = Color(0xFF2E7D32);
+  static const warning = tuscanSun;
+  static const error = brandy;
 }
 
 ThemeData buildTheme() {
@@ -33,7 +38,7 @@ ThemeData buildTheme() {
 
   OutlineInputBorder border([Color? c]) => OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(color: c ?? const Color(0xFFD5D9E0)),
+        borderSide: BorderSide(color: c ?? AppColors.line),
       );
 
   return ThemeData(
